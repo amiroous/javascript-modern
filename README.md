@@ -4,6 +4,7 @@
 #### Table Of Content
 - [Snippets](topics/snippets.md#snippets)
 - [Scope](topics/scope.md#scope)
+- [ES6 Features](topics/es6-features.md#es6-features)
 - [Tips & Tricks](topics/tips-&-tricks.md#tips-&-tricks)
 - [Recursive Pattern Functions](topics/recursive-pattern-functions.md#recursive-pattern-functions)
 - [RegExp](topics/regexp.md#regexp)
