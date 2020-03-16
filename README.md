@@ -2,15 +2,16 @@
 
 
 #### Table Of Content
+- [Design Patterns](topics/design-patterns/README.md)
+- [Scope & Closure](topics/scope.md#scope)
+- [Inheritance vs. Composition](topics/inheritance-composition.md#inheritance-vs.=composition)
 - [Snippets](topics/snippets.md#snippets)
-- [Scope](topics/scope.md#scope)
 - [ES6 Features](topics/es6-features.md#es6-features)
 - [Tips & Tricks](topics/tips-&-tricks.md#tips-&-tricks)
 - [Recursive Pattern Functions](topics/recursive-pattern-functions.md#recursive-pattern-functions)
 - [RegExp](topics/regexp.md#regexp)
 - [Generators](topics/generators.md#generators)
 - [Promises](topics/promises.md#promises)
-- [Design Patterns](topics/design-patterns/README.md)
 
 
 ---

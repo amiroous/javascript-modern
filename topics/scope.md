@@ -195,17 +195,18 @@ __Note:__
 
 - When you return an inner function from a function, that returned function will not be called when you try to call the outer function. You must first save the invocation of the outer function in a separate variable and then call the variable as a function.
   ```javascript
-  const Password = (code = 123) => {
-      // code & displayCode are private variable/function and cant be accessed out of Passwrod scope directly
-      const displayCode = () => { console.log(`Password Code: ${code}`) };
-      return displayCode;
-  }
-
-  Password(456); // Nothing! You need to save returned value as a variable
-  // Password.displayCode(); // TypeError, displayCode is private!
-
-  const pass = Password(456); // the private displayCode saved into a variable and is within its scope now
-  pass(); // Password Code: 456
+    const outerFunction = (outerVariable) => {
+    
+        const innerFunction = (innerVariable) => {
+            console.log('outerVariable: ', outerVariable);
+            console.log('innerVariable: ', innerVariable);
+        };
+    
+        return innerFunction;
+    };
+    
+    const myFunction = outerFunction('Outer Variable as Closure');
+    myFunction('Inner Variable');
   ```
 
 
@@ -238,15 +239,30 @@ __Note:__
 
   variables created in a function cannot be accessed outside the function. Since they can't be accessed, they are private variables.
   ```javascript
-  const Password = (code = 123) => {
-      // code is a  private variable and cant be accessed out of the function
-      const displayCode = () => { console.log(`Password Code: ${code}`) };
-      return { displayCode }; // by returning displayCode closure in new scope {} we expose its value only through displayCode
-  }
-
-  const pass = Password();
-  // pass(); // TypeError: pass is not a function
-  pass.displayCode(); // Password Code: 123
+  const Secret = (publicA= 'Public A') => {
+  
+      const secretA = 'Secret B';
+  
+      const getSecrets = (secretB = 'Secret B') => {
+  
+          const secretC = 'Secret C';
+  
+          return {
+              secretA,
+              secretB,
+              secretC
+          }
+      };
+  
+      return {
+          publicA,
+          getSecrets
+      }
+  };
+  
+  const secret = new Secret();
+  console.log(secret.publicA, secret.secretA, secret.secretB, secret.secretC); // Public A undefined undefined undefined
+  console.log(secret.getSecrets()); // {secretA: "Secret B", secretB: "Secret B", secretC: "Secret C"}
   ```
 
 
@@ -254,57 +270,88 @@ __Note:__
  
   Encapsulating functions from the public (global) scope to private or protected saves them from vulnerable attacks. But in JavaScript, there is no such thing as public or private scope. However, we can emulate this feature using closures.
   ```javascript
-  (function () {
-    /* private scope */
+  const User = (() => {
+  
+      const credentials = {
+          key: 'USER_KEY',
+          secret: 'ABC123'
+      };
+  
+      const api = 'https://jsonplaceholder.typicode.com/users';
+  
+      const get = async (userId) => {
+          const response = await fetch(`${api}/${userId}`);
+          return response.json()
+      };
+  
+      return {
+          get
+      };
+  
   })();
-
-  // OR
-
-  (() => { /* private scope */ })()
+  
+  const user = User.get(1);
+  console.log(User); // {get: ƒ}
+  console.log(user); // Promise {<pending>}
+  user.then(console.log); // {id: 1, …}
   ```
 
 
 4. __Module Pattern__
 
   Module Pattern__ allows us to scope our functions using both public and private scopes in an object (_One convention is to begin private functions with an underscore_)
+ ```ecmascript 6
+    const Module = function(name) {
+    
+        this.name = name;
+    
+        const getModuleName = () => this.name;
+        const setModuleName = (name) => this.name = name;
+    
+        return {
+            getModuleName,
+            setModuleName
+        }
+    };
+    
+    const module = new Module('Module Name');
+    
+    console.log(module.name); // undefined
+    console.log(module.getModuleName()); // Module Name
+    
+    module.setModuleName('New Module Name');
+    console.log(module.getModuleName()); // New Module Name
+  ```
+ 
   ```javascript
   const Module = (() => {
-
-      this.name = 'Nice Module';
-
-      _privateMethod = () => {
+  
+      const name = 'Nice Module';
+  
+      const _privateMethod = () => {
           console.log("Module._privateMethod Invoked Privately");
-          return `Module._privateMethod returned "${this.name}"`;
-      }
-
-      publicMethod = () => {
-          console.log("Module.publicMethod Invoked Publically");
+          return `Module._privateMethod returned "${name}"`;
+      };
+  
+      const publicMethod = () => {
+          console.log("Module.publicMethod Invoked Publicly");
           console.log(_privateMethod());
           console.log("Module.publicMethod Done.");
-      }
-
+      };
+  
       return {
-          publicMethod // publicMethod: publicMethod
+          publicMethod
       }
   })();
-
-
+  
+  
   try {
-      Module.publicMethod();
       Module._privateMethod();
   } catch(e) {
-      console.error(`ERROR ACCESS PRIVATE:`);
-      console.log(`${e.message}`);
+      console.error(`ERROR ACCESS PRIVATE: ${e.message}`);
+  } finally {
+      Module.publicMethod();
   }
-
-  /*
-  Module.publicMethod Invoked Publically
-  Module._privateMethod Invoked Privately
-  Module._privateMethod returned "Nice Module"
-  Module.publicMethod Done.
-  ERROR ACCESS PRIVATE:
-  Module._privateMethod is not a function
-  */
   ```
 
 
