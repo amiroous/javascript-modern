@@ -5,6 +5,7 @@
 - [Design Patterns](topics/design-patterns/README.md)
 - [Scope & Closure](topics/scope.md#scope)
 - [Inheritance vs. Composition](topics/inheritance-composition.md#inheritance-vs.=composition)
+- [Asynchronous JavaScript](topics/asynchronous.md#asynchronous-javascript)
 - [Snippets](topics/snippets.md#snippets)
 - [ES6 Features](topics/es6-features.md#es6-features)
 - [Tips & Tricks](topics/tips-&-tricks.md#tips-&-tricks)
@@ -12,7 +13,6 @@
 - [RegExp](topics/regexp.md#regexp)
 - [Generators](topics/generators.md#generators)
 - [Promises](topics/promises.md#promises)
-
 
 ---
 
