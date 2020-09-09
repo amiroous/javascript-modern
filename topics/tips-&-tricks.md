@@ -185,6 +185,11 @@ let moveDown = (array, element) => move(array, element, 1);
 <p></p>
 
 
+#### Generate Array of Numbers
+```javascript
+const arrayOfNums = (n, start = 0) => [...Array.from({length: n}, (_, i) => i = start + i)]
+```
+<p></p>
 
 
 
